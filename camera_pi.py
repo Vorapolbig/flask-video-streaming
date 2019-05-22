@@ -1,3 +1,6 @@
+# Copyright (c) 2014 Miguel Grinberg
+# SPDX-License-Identifier: MIT
+
 import io
 import time
 import picamera

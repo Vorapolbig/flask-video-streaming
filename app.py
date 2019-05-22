@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) 2014 Miguel Grinberg
+# SPDX-License-Identifier: MIT
+
 from importlib import import_module
 import os
 from flask import Flask, render_template, Response
