@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>NXP Layerscape Goggle+Helmet Detection</title>
+    <link rel="shortcut icon" href="/static/images/nxp_favicon.ico">
+  </head>
+  <body background="{{ url_for('static', filename='images/BG.png') }}">
+    <center><h1>NXP Layerscape Goggle+Helmet Detection</h1></center>
+    <center><img src="{{ url_for('video_feed') }}"></center>
+    <footer>
+      <p style="text-align:center;"><img src="{{ url_for('static', filename='images/nxp_logo.png') }}"><br />
+	Copyright 2019 NXP.</p>
+    </footer>
+  </body>
+</html>
