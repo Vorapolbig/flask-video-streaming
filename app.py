@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # Copyright (c) 2014 Miguel Grinberg
+# Copyright 2019 NXP
+
 # SPDX-License-Identifier: MIT
 
 from importlib import import_module
@@ -8,8 +10,10 @@ from flask import Flask, render_template, Response
 
 # import camera driver
 if os.environ.get('CAMERA'):
-    Camera = import_module('camera_' + os.environ['CAMERA']).Camera
+    camera_suffix = '_' + os.environ['CAMERA']
+    Camera = import_module('camera' + camera_suffix).Camera
 else:
+    camera_suffix = ''
     from camera import Camera
 
 # Raspberry Pi camera module (requires picamera package)
@@ -24,7 +28,15 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     """Video streaming home page."""
-    return render_template('index.html')
+
+    global camera_suffix
+
+#   Use camera based index if it exits.
+    index = 'index' + camera_suffix + '.html'
+    if not os.path.exists(os.path.sep.join(['templates', index])):
+        index = 'index.html'
+
+    return render_template(index)
 
 
 def gen(camera):
