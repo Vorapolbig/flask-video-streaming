@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Copyright (c) 2014 Miguel Grinberg
-# Copyright 2019 NXP
+# Copyright 2019, 2020 NXP
 
 # SPDX-License-Identifier: MIT
 
@@ -30,11 +30,13 @@ def index():
     """Video streaming home page."""
 
     global camera_suffix
+    index = 'index.html'
 
-#   Use camera based index if it exits.
-    index = 'index' + camera_suffix + '.html'
-    if not os.path.exists(os.path.sep.join(['templates', index])):
-        index = 'index.html'
+    if os.environ.get('INDEX') and os.path.exists(os.path.sep.join(['templates', os.environ.get('INDEX')])):
+        index = os.environ.get('INDEX')
+    elif os.path.exists(os.path.sep.join(['templates', 'index' + camera_suffix + '.html'])):
+        #   Use camera based index if it exits.
+        index = 'index' + camera_suffix + '.html'
 
     return render_template(index)
 
