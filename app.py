@@ -8,6 +8,9 @@ from importlib import import_module
 import os
 from flask import Flask, render_template, Response
 
+import cv2 
+import time 
+
 # import camera driver
 if os.environ.get('CAMERA'):
     camera_suffix = '_' + os.environ['CAMERA']
@@ -41,20 +44,35 @@ def index():
     return render_template(index)
 
 
-def gen(camera):
+def gen_cam(camera):
     """Video streaming generator function."""
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
+        
+def gen():
+    
+    cap = cv2.VideoCapture('rtsp://service:!Service0@192.168.4.82:554/h264')
+    
+    while True:
+        ret, img = cap.read()
+        if  ret == True:
+            frame = cv2. imencode('.jpg',img)[1].tobytes()
+            yield (b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            time.sleep(0.1)
+        else:
+            break
+            
+    
+    
 
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', threaded=True)
+
