@@ -27,5 +27,5 @@ ENV CAMERA=opencv
 ENV CAMERA_PORT=5000
 EXPOSE $CAMERA_PORT
 
-#CMD gunicorn --threads 5 --workers 1 --bind 0.0.0.0:$CAMERA_PORT app:app
+CMD gunicorn --threads 5 --workers 1 --bind 0.0.0.0:$CAMERA_PORT app:app
 #CMD ["gunicorn", "--threads", "5", "--workers", "1", "--bind", "0.0.0.0:$CAMERA_PORT", "app:app"]
